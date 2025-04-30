@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Random Character Selector</title>
+        <link rel="manifest" href="manifest.json">
+          <style>
+              body {
+                    font-family: Arial, sans-serif;
+                          text-align: center;
+                                padding: 20px;
+                                    }
+                                        .input-boxes {
+                                              display: flex;
+                                                    justify-content: center;
+                                                          gap: 10px;
+                                                                margin: 20px 0;
+                                                                    }
+                                                                        .input-box {
+                                                                              width: 30px;
+                                                                                    height: 30px;
+                                                                                          text-align: center;
+                                                                                                font-size: 18px;
+                                                                                                    }
+                                                                                                        button {
+                                                                                                              padding: 10px 20px;
+                                                                                                                    font-size: 16px;
+                                                                                                                          cursor: pointer;
+                                                                                                                              }
+                                                                                                                                  #result {
+                                                                                                                                        margin-top: 20px;
+                                                                                                                                              font-weight: bold;
+                                                                                                                                                  }
+                                                                                                                                                    </style>
+                                                                                                                                                    </head>
+                                                                                                                                                    <body>
+                                                                                                                                                      <h1>Random Character Selector</h1>
+                                                                                                                                                        <p>Enter 10 numbers (one per box):</p>
+                                                                                                                                                          <div class="input-boxes" id="inputContainer"></div>
+                                                                                                                                                            <button id="generateBtn" disabled>Give Me My Code!</button>
+                                                                                                                                                              <div id="result"></div>
+
+                                                                                                                                                                <script>
+                                                                                                                                                                    // Create 10 input boxes
+                                                                                                                                                                        const inputContainer = document.getElementById('inputContainer');
+                                                                                                                                                                            const inputs = [];
+
+                                                                                                                                                                                for (let i = 0; i < 10; i++) {
+                                                                                                                                                                                      const input = document.createElement('input');
+                                                                                                                                                                                            input.type = 'text';
+                                                                                                                                                                                                  input.maxLength = 1;
+                                                                                                                                                                                                        input.className = 'input-box';
+                                                                                                                                                                                                              input.addEventListener('input', validateInputs);
+                                                                                                                                                                                                                    inputs.push(input);
+                                                                                                                                                                                                                          inputContainer.appendChild(input);
+                                                                                                                                                                                                                              }
+
+                                                                                                                                                                                                                                  // Validate inputs (only numbers + all filled)
+                                                                                                                                                                                                                                      function validateInputs() {
+                                                                                                                                                                                                                                            const allFilled = inputs.every(input => /^\d$/.test(input.value));
+                                                                                                                                                                                                                                                  document.getElementById('generateBtn').disabled = !allFilled;
+                                                                                                                                                                                                                                                      }
+
+                                                                                                                                                                                                                                                          // Generate random code
+                                                                                                                                                                                                                                                              document.getElementById('generateBtn').addEventListener('click', () => {
+                                                                                                                                                                                                                                                                    const chars = inputs.map(input => input.value);
+                                                                                                                                                                                                                                                                          const positions = [];
+                                                                                                                                                                                                                                                                                const selectedChars = [];
+
+                                                                                                                                                                                                                                                                                      // Pick 4 unique random positions
+                                                                                                                                                                                                                                                                                            while (positions.length < 4) {
+                                                                                                                                                                                                                                                                                                    const pos = Math.floor(Math.random() * 10);
+                                                                                                                                                                                                                                                                                                            if (!positions.includes(pos)) {
+                                                                                                                                                                                                                                                                                                                      positions.push(pos);
+                                                                                                                                                                                                                                                                                                                                selectedChars.push(chars[pos]);
+                                                                                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                                                                                              }
+
+                                                                                                                                                                                                                                                                                                                                                    // Display result
+                                                                                                                                                                                                                                                                                                                                                          const positionText = positions.map(pos => {
+                                                                                                                                                                                                                                                                                                                                                                  const suffix = pos === 0 ? 'st' : pos === 1 ? 'nd' : pos === 2 ? 'rd' : 'th';
+                                                                                                                                                                                                                                                                                                                                                                          return `${pos + 1}${suffix}`;
+                                                                                                                                                                                                                                                                                                                                                                                }).join(', ');
+
+                                                                                                                                                                                                                                                                                                                                                                                      document.getElementById('result').innerHTML = `
+                                                                                                                                                                                                                                                                                                                                                                                              Your code is: <strong>${selectedChars.join('')}</strong><br>
+                                                                                                                                                                                                                                                                                                                                                                                                      (The ${positionText} characters of your input).
+                                                                                                                                                                                                                                                                                                                                                                                                            `;
+                                                                                                                                                                                                                                                                                                                                                                                                                });
+                                                                                                                                                                                                                                                                                                                                                                                                                  </script>
+                                                                                                                                                                                                                                                                                                                                                                                                                  </body>
+                                                                                                                                                                                                                                                                                                                                                                                                                  </html>
